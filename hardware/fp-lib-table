@@ -1,0 +1,4 @@
+(fp_lib_table
+  (version 7)
+  (lib (name "RF-to-USB")(type "KiCad")(uri "${KIPRJMOD}/footprints/RF-to-USB.pretty")(options "")(descr ""))
+)
