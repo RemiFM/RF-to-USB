@@ -16,3 +16,18 @@ Command-line arguments:  -os win32 -ws win32 -arch x86_64 -data C:\Users\remi.de
 
 !ENTRY org.eclipse.cdt.core 1 0 2025-03-10 22:13:15.214
 !MESSAGE Indexed 'RF-to-USB' (21 sources, 80 headers) in 5.8 sec: 4,655 declarations; 20,908 references; 0 unresolved inclusions; 1 syntax errors; 2 unresolved names (0.0078%)
+!SESSION 2025-03-11 15:54:23.731 -----------------------------------------------
+eclipse.buildId=Version 1.17.0
+java.version=21.0.3
+java.vendor=Eclipse Adoptium
+BootLoader constants: OS=win32, ARCH=x86_64, WS=win32, NL=en_GB
+Command-line arguments:  -os win32 -ws win32 -arch x86_64
+
+!ENTRY com.st.stm32cube.ide.mcu.informationcenter 4 4 2025-03-11 15:55:04.983
+!MESSAGE CubeMX plugin appears to be active, Log4j initialization might be too late.
+
+!ENTRY com.st.stm32cube.ide.mcu.informationcenter 1 1 2025-03-11 15:55:04.986
+!MESSAGE Log4j2 initialized with config file C:\Users\remi.decoster\OneDrive - Flanders Make vzw\Documents\Personal\RF-to-USB\firmware\.metadata\.log4j2.xml
+
+!ENTRY com.st.stm32cube.ide.mcu.ide 1 1 2025-03-11 15:55:21.085
+!MESSAGE Started RMI Server, listening on port 41337

@@ -61,6 +61,10 @@ void Error_Handler(void);
 #define LED_TX_GPIO_Port GPIOA
 #define LED_RX_Pin GPIO_PIN_3
 #define LED_RX_GPIO_Port GPIOA
+#define BTN1_EXTI_Pin GPIO_PIN_6
+#define BTN1_EXTI_GPIO_Port GPIOA
+#define BTN2_EXTI_Pin GPIO_PIN_7
+#define BTN2_EXTI_GPIO_Port GPIOA
 #define NRF_IRQ_Pin GPIO_PIN_15
 #define NRF_IRQ_GPIO_Port GPIOA
 #define NRF_IRQ_EXTI_IRQn EXTI15_10_IRQn
