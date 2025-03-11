@@ -420,7 +420,7 @@
 	)
 	(model "${KIPRJMOD}/3dmodels/USB-MOLEX-0480372200.stp"
 		(offset
-			(xyz 0 0 0.5)
+			(xyz 0 0 -0.18)
 		)
 		(scale
 			(xyz 1 1 1)
