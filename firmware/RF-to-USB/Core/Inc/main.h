@@ -57,14 +57,20 @@ void Error_Handler(void);
 /* USER CODE END EFP */
 
 /* Private defines -----------------------------------------------------------*/
+#define BTN1_EXTI_Pin GPIO_PIN_0
+#define BTN1_EXTI_GPIO_Port GPIOA
+#define BTN2_EXTI_Pin GPIO_PIN_1
+#define BTN2_EXTI_GPIO_Port GPIOA
 #define LED_TX_Pin GPIO_PIN_2
 #define LED_TX_GPIO_Port GPIOA
 #define LED_RX_Pin GPIO_PIN_3
 #define LED_RX_GPIO_Port GPIOA
-#define BTN1_EXTI_Pin GPIO_PIN_6
-#define BTN1_EXTI_GPIO_Port GPIOA
-#define BTN2_EXTI_Pin GPIO_PIN_7
-#define BTN2_EXTI_GPIO_Port GPIOA
+#define OLED_DC_Pin GPIO_PIN_5
+#define OLED_DC_GPIO_Port GPIOA
+#define OLED_CS_Pin GPIO_PIN_6
+#define OLED_CS_GPIO_Port GPIOA
+#define OLED_RES_Pin GPIO_PIN_7
+#define OLED_RES_GPIO_Port GPIOA
 #define NRF_IRQ_Pin GPIO_PIN_15
 #define NRF_IRQ_GPIO_Port GPIOA
 #define NRF_IRQ_EXTI_IRQn EXTI15_10_IRQn

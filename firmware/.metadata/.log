@@ -31,3 +31,33 @@ Command-line arguments:  -os win32 -ws win32 -arch x86_64
 
 !ENTRY com.st.stm32cube.ide.mcu.ide 1 1 2025-03-11 15:55:21.085
 !MESSAGE Started RMI Server, listening on port 41337
+!SESSION 2025-03-12 12:44:51.848 -----------------------------------------------
+eclipse.buildId=Version 1.17.0
+java.version=21.0.3
+java.vendor=Eclipse Adoptium
+BootLoader constants: OS=win32, ARCH=x86_64, WS=win32, NL=en_GB
+Command-line arguments:  -os win32 -ws win32 -arch x86_64
+
+!ENTRY com.st.stm32cube.ide.mcu.informationcenter 4 4 2025-03-12 12:45:10.068
+!MESSAGE CubeMX plugin appears to be active, Log4j initialization might be too late.
+
+!ENTRY com.st.stm32cube.ide.mcu.informationcenter 1 1 2025-03-12 12:45:10.070
+!MESSAGE Log4j2 initialized with config file C:\Users\remi.decoster\OneDrive - Flanders Make vzw\Documents\Personal\RF-to-USB\firmware\.metadata\.log4j2.xml
+
+!ENTRY com.st.stm32cube.ide.mcu.ide 1 1 2025-03-12 12:45:15.599
+!MESSAGE Started RMI Server, listening on port 41337
+!SESSION 2025-03-17 15:36:01.793 -----------------------------------------------
+eclipse.buildId=Version 1.17.0
+java.version=21.0.3
+java.vendor=Eclipse Adoptium
+BootLoader constants: OS=win32, ARCH=x86_64, WS=win32, NL=en_GB
+Command-line arguments:  -os win32 -ws win32 -arch x86_64
+
+!ENTRY com.st.stm32cube.ide.mcu.informationcenter 4 4 2025-03-17 15:36:27.924
+!MESSAGE CubeMX plugin appears to be active, Log4j initialization might be too late.
+
+!ENTRY com.st.stm32cube.ide.mcu.informationcenter 1 1 2025-03-17 15:36:27.927
+!MESSAGE Log4j2 initialized with config file C:\Users\remi.decoster\OneDrive - Flanders Make vzw\Documents\Personal\RF-to-USB\firmware\.metadata\.log4j2.xml
+
+!ENTRY com.st.stm32cube.ide.mcu.ide 1 1 2025-03-17 15:36:37.299
+!MESSAGE Started RMI Server, listening on port 41337

@@ -2,29 +2,28 @@
 	(version 20241209)
 	(generator "kicad_symbol_editor")
 	(generator_version "9.0")
-	(symbol "OLED_128_32"
+	(symbol "OLED_15P"
 		(exclude_from_sim no)
 		(in_bom yes)
 		(on_board yes)
 		(property "Reference" "U"
-			(at 0.635 3.81 0)
+			(at 0 6.985 0)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
 			)
 		)
-		(property "Value" "OLED"
-			(at 10.16 3.81 0)
+		(property "Value" "OLED Display"
+			(at 0 4.445 0)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(justify right)
 			)
 		)
-		(property "Footprint" "RF-to-USB:Display_Fermion_OLED_128_32"
-			(at -1.27 -12.065 0)
+		(property "Footprint" "RF-to-USB:Display_Univision_UG-2832HSWEG04"
+			(at 0 0 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -41,7 +40,7 @@
 				(hide yes)
 			)
 		)
-		(property "Description" ""
+		(property "Description" "LCD-24177"
 			(at 0 0 0)
 			(effects
 				(font
@@ -50,7 +49,7 @@
 				(hide yes)
 			)
 		)
-		(property "SKU" "DFR0647"
+		(property "Digi-Key" "1568-LCD-24177-ND"
 			(at 0 0 0)
 			(effects
 				(font
@@ -59,10 +58,19 @@
 				(hide yes)
 			)
 		)
-		(symbol "OLED_128_32_1_1"
+		(property "ki_keywords" "OLED, Display"
+			(at 0 0 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(symbol "OLED_15P_1_1"
 			(rectangle
-				(start 0 2.54)
-				(end 10.16 -10.16)
+				(start -10.16 2.54)
+				(end 10.16 -22.86)
 				(stroke
 					(width 0)
 					(type solid)
@@ -71,16 +79,44 @@
 					(type background)
 				)
 			)
-			(text "0.91\"\n128x32"
-				(at 7.62 -3.81 900)
-				(effects
-					(font
-						(size 1.27 1.27)
+			(pin power_in line
+				(at -12.7 0 0)
+				(length 2.54)
+				(name "VDD"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "7"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
 					)
 				)
 			)
 			(pin power_in line
-				(at -2.54 0 0)
+				(at -12.7 -2.54 0)
+				(length 2.54)
+				(name "VBAT"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "5"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin power_in line
+				(at -12.7 -8.89 0)
 				(length 2.54)
 				(name "VCC"
 					(effects
@@ -89,7 +125,7 @@
 						)
 					)
 				)
-				(number "1"
+				(number "15"
 					(effects
 						(font
 							(size 1.27 1.27)
@@ -97,10 +133,46 @@
 					)
 				)
 			)
-			(pin unspecified line
-				(at -2.54 -2.54 0)
+			(pin output line
+				(at -12.7 -11.43 0)
 				(length 2.54)
-				(name "SCL"
+				(name "VCOMH"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "14"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin power_in line
+				(at -12.7 -15.24 0)
+				(length 2.54)
+				(name "VSS"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "6"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin passive line
+				(at -7.62 -25.4 90)
+				(length 2.54)
+				(name "C1P"
 					(effects
 						(font
 							(size 1.27 1.27)
@@ -115,10 +187,46 @@
 					)
 				)
 			)
-			(pin unspecified line
-				(at -2.54 -5.08 0)
+			(pin passive line
+				(at -5.08 -25.4 90)
 				(length 2.54)
-				(name "SDA"
+				(name "C2P"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "1"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin passive line
+				(at 5.08 -25.4 90)
+				(length 2.54)
+				(name "C2N"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "2"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin passive line
+				(at 7.62 -25.4 90)
+				(length 2.54)
+				(name "C1N"
 					(effects
 						(font
 							(size 1.27 1.27)
@@ -133,17 +241,107 @@
 					)
 				)
 			)
-			(pin power_in line
-				(at -2.54 -7.62 0)
+			(pin input line
+				(at 12.7 0 180)
 				(length 2.54)
-				(name "GND"
+				(name "~{RES}"
 					(effects
 						(font
 							(size 1.27 1.27)
 						)
 					)
 				)
-				(number "2"
+				(number "9"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin input line
+				(at 12.7 -2.54 180)
+				(length 2.54)
+				(name "MOSI"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "12"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin input line
+				(at 12.7 -5.08 180)
+				(length 2.54)
+				(name "SCLK"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "11"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin input line
+				(at 12.7 -7.62 180)
+				(length 2.54)
+				(name "~{CS}"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "8"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin input line
+				(at 12.7 -10.16 180)
+				(length 2.54)
+				(name "D/~{C}"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "10"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+			)
+			(pin input line
+				(at 12.7 -15.24 180)
+				(length 2.54)
+				(name "IREF"
+					(effects
+						(font
+							(size 1.27 1.27)
+						)
+					)
+				)
+				(number "13"
 					(effects
 						(font
 							(size 1.27 1.27)
