@@ -1,3 +1,5 @@
+![sw](https://img.shields.io/badge/STM32CubeIDE-1.17.0-blue?logo=stmicroelectronics)
+![EDA](https://img.shields.io/badge/KiCad-9.0-blue?logo=kicad)
 # RF-to-USB
 
 <img src="documentation/render_front.png" alt="Front Render" width="75%"/>
@@ -7,9 +9,6 @@
  
 The schematic (PDF) can be found under [documentation/schematic.pdf](documentation/schematic.pdf)  
 The manufacturing Gerber files can be found under [hardware/production](hardware/production)
-
-![sw](https://img.shields.io/badge/STM32CubeIDE-1.17.0-blue?logo=stmicroelectronics)
-![EDA](https://img.shields.io/badge/KiCad-9.0-blue?logo=kicad)
 
 ## Acknowledgements
 
