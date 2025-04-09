@@ -10,7 +10,7 @@
  
 The schematic (PDF) can be found under [documentation/schematic.pdf](documentation/schematic.pdf)  
 The manufacturing Gerber files can be found under [hardware/production](hardware/production)
-
+The bill of materials (BOM) can be found under [hardware/RF-to-USB_BOM.csv](hardware/RF-to-USB_BOM.csv) or through the following [Digi-Key list](https://www.digikey.be/en/mylists/list/OKW62PSVJE).
 ## Acknowledgements
 
 This project is inspired by [STRF-Kicad](https://github.com/pms67/STRF-Kicad) by Philip Salmony, and has been expanded with a 0.91" OLED display and control buttons for additional functionality and monitoring.
