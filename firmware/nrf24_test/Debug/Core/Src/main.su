@@ -1,0 +1,7 @@
+../Core/Src/main.c:72:5:main	16	static
+../Core/Src/main.c:124:6:SystemClock_Config	128	static
+../Core/Src/main.c:191:13:MX_SPI3_Init	8	static
+../Core/Src/main.c:231:13:MX_USB_PCD_Init	8	static
+../Core/Src/main.c:264:13:MX_GPIO_Init	40	static
+../Core/Src/main.c:315:9:nrf24_read_register	32	static
+../Core/Src/main.c:331:6:Error_Handler	4	static,ignoring_inline_asm

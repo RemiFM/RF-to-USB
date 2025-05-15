@@ -1,0 +1,10 @@
+23:52:46 **** Incremental Build of configuration Debug for project nrf24_test ****
+make -j20 all 
+arm-none-eabi-size  nrf24_test.elf 
+   text	   data	    bss	    dec	    hex	filename
+  11604	     12	   2404	  14020	   36c4	nrf24_test.elf
+Finished building: default.size.stdout
+ 
+
+23:52:46 Build Finished. 0 errors, 0 warnings. (took 258ms)
+

@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Rename resource &apos;RF-to-USB/Lib/support.h&apos; to &apos;nrf24_platform.h&apos;" description="Rename resource &apos;support.h&apos;" flags="7" id="org.eclipse.ltk.core.refactoring.rename.resource" input="Lib/support.h" name="nrf24_platform.h" stamp="1746552684965" updateReferences="true"/>
+</session>

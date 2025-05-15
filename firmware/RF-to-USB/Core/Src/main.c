@@ -23,6 +23,8 @@
 /* USER CODE BEGIN Includes */
 #include "ssd1306.h"
 #include "ssd1306_fonts.h"
+#include "nrf24.h"
+
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -103,6 +105,12 @@ int main(void)
   ssd1306_WriteString("Miauw!", Font_16x24, White);
   ssd1306_UpdateScreen();
 
+  //nRF24_CE_H();
+  nRF24_Init();
+  nRF24_SetPowerMode(nRF24_PWR_UP);
+  uint8_t nRF24_present;
+
+
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -114,6 +122,23 @@ int main(void)
     /* USER CODE BEGIN 3 */
 	HAL_GPIO_TogglePin(LED_TX_GPIO_Port, LED_TX_Pin);
 	HAL_GPIO_TogglePin(LED_RX_GPIO_Port, LED_RX_Pin);
+
+	nRF24_present = nRF24_Check();
+	if (nRF24_present){
+		ssd1306_Fill(Black);
+		ssd1306_SetCursor(2, 0);
+		ssd1306_WriteString("nRF24 OK!", Font_16x15, White);
+		ssd1306_SetCursor(2, 15+2);
+		ssd1306_WriteString("start transmitting...", Font_16x15, White);
+		ssd1306_UpdateScreen();
+	} else {
+		ssd1306_Fill(Black);
+		ssd1306_SetCursor(2, 0);
+		ssd1306_WriteString("Failed!", Font_16x24, White);
+		ssd1306_UpdateScreen();
+	}
+
+
 	HAL_Delay(500);
 
   }
@@ -209,7 +234,7 @@ static void MX_SPI3_Init(void)
   hspi3.Init.CLKPolarity = SPI_POLARITY_LOW;
   hspi3.Init.CLKPhase = SPI_PHASE_1EDGE;
   hspi3.Init.NSS = SPI_NSS_SOFT;
-  hspi3.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_2;
+  hspi3.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_16;
   hspi3.Init.FirstBit = SPI_FIRSTBIT_MSB;
   hspi3.Init.TIMode = SPI_TIMODE_DISABLE;
   hspi3.Init.CRCCalculation = SPI_CRCCALCULATION_DISABLE;
@@ -275,14 +300,19 @@ static void MX_GPIO_Init(void)
   __HAL_RCC_GPIOB_CLK_ENABLE();
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOA, LED_TX_Pin|LED_RX_Pin|OLED_DC_Pin|OLED_CS_Pin
-                          |OLED_RES_Pin, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(GPIOA, LED_TX_Pin|LED_RX_Pin|OLED_DC_Pin|OLED_RES_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOB, SPI3_CS_Pin|NRF_CE_Pin, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(OLED_CS_GPIO_Port, OLED_CS_Pin, GPIO_PIN_SET);
 
-  /*Configure GPIO pins : BTN2_EXTI_Pin BTN1_EXTI_Pin NRF_IRQ_Pin */
-  GPIO_InitStruct.Pin = BTN2_EXTI_Pin|BTN1_EXTI_Pin|NRF_IRQ_Pin;
+  /*Configure GPIO pin Output Level */
+  HAL_GPIO_WritePin(SPI3_CS_GPIO_Port, SPI3_CS_Pin, GPIO_PIN_SET);
+
+  /*Configure GPIO pin Output Level */
+  HAL_GPIO_WritePin(NRF_CE_GPIO_Port, NRF_CE_Pin, GPIO_PIN_RESET);
+
+  /*Configure GPIO pins : BTN2_EXTI_Pin BTN1_EXTI_Pin */
+  GPIO_InitStruct.Pin = BTN2_EXTI_Pin|BTN1_EXTI_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_IT_RISING;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
@@ -296,11 +326,17 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
 
+  /*Configure GPIO pin : NRF_IRQ_Pin */
+  GPIO_InitStruct.Pin = NRF_IRQ_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_IT_FALLING;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  HAL_GPIO_Init(NRF_IRQ_GPIO_Port, &GPIO_InitStruct);
+
   /*Configure GPIO pins : SPI3_CS_Pin NRF_CE_Pin */
   GPIO_InitStruct.Pin = SPI3_CS_Pin|NRF_CE_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
-  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_HIGH;
   HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
 
   /* EXTI interrupt init*/

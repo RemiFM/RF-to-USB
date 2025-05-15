@@ -1,0 +1,42 @@
+C:/Users/remi.decoster/OneDrive - Flanders Make vzw/Documents/Personal/RF-to-USB/firmware/RF-to-USB/Lib/nrf24_platform.h:26:20:nRF24_CSN_L	1
+C:/Users/remi.decoster/OneDrive - Flanders Make vzw/Documents/Personal/RF-to-USB/firmware/RF-to-USB/Lib/nrf24_platform.h:30:20:nRF24_CSN_H	1
+C:/Users/remi.decoster/OneDrive - Flanders Make vzw/Documents/Personal/RF-to-USB/firmware/RF-to-USB/Lib/nrf24_platform.h:35:23:nRF24_LL_RW	2
+../Lib/nrf24.c:9:16:nRF24_ReadReg	1
+../Lib/nrf24.c:24:13:nRF24_WriteReg	6
+../Lib/nrf24.c:47:13:nRF24_ReadMBReg	2
+../Lib/nrf24.c:61:13:nRF24_WriteMBReg	2
+../Lib/nrf24.c:72:6:nRF24_Init	1
+../Lib/nrf24.c:106:9:nRF24_Check	3
+../Lib/nrf24.c:126:6:nRF24_SetPowerMode	2
+../Lib/nrf24.c:145:6:nRF24_SetOperationalMode	1
+../Lib/nrf24.c:158:6:nRF24_SetDynamicPayloadLength	2
+../Lib/nrf24.c:173:6:nRF24_SetPayloadWithAck	2
+../Lib/nrf24.c:188:6:nRF24_SetCRCScheme	1
+../Lib/nrf24.c:203:6:nRF24_SetRFChannel	1
+../Lib/nrf24.c:212:6:nRF24_SetAutoRetr	1
+../Lib/nrf24.c:221:6:nRF24_SetAddrWidth	1
+../Lib/nrf24.c:235:6:nRF24_SetAddr	7
+../Lib/nrf24.c:270:6:nRF24_SetTXPower	1
+../Lib/nrf24.c:283:6:nRF24_SetDataRate	1
+../Lib/nrf24.c:298:6:nRF24_SetRXPipe	2
+../Lib/nrf24.c:321:6:nRF24_ClosePipe	1
+../Lib/nrf24.c:333:6:nRF24_EnableAA	1
+../Lib/nrf24.c:345:6:nRF24_DisableAA	2
+../Lib/nrf24.c:361:9:nRF24_GetStatus	1
+../Lib/nrf24.c:367:9:nRF24_GetIRQFlags	1
+../Lib/nrf24.c:373:9:nRF24_GetStatus_RXFIFO	1
+../Lib/nrf24.c:380:9:nRF24_GetStatus_TXFIFO	1
+../Lib/nrf24.c:386:9:nRF24_GetRXSource	1
+../Lib/nrf24.c:394:9:nRF24_GetRetransmitCounters	1
+../Lib/nrf24.c:399:6:nRF24_ResetPLOS	1
+../Lib/nrf24.c:408:6:nRF24_FlushTX	1
+../Lib/nrf24.c:413:6:nRF24_FlushRX	1
+../Lib/nrf24.c:418:6:nRF24_ClearIRQFlags	1
+../Lib/nrf24.c:431:6:nRF24_WritePayload	1
+../Lib/nrf24.c:435:16:nRF24_GetRxDplPayloadWidth	1
+../Lib/nrf24.c:447:23:nRF24_ReadPayloadGeneric	5
+../Lib/nrf24.c:487:16:nRF24_ReadPayload	1
+../Lib/nrf24.c:491:16:nRF24_ReadPayloadDpl	1
+../Lib/nrf24.c:495:9:nRF24_GetFeatures	1
+../Lib/nrf24.c:498:6:nRF24_ActivateFeatures	1
+../Lib/nrf24.c:504:6:nRF24_WriteAckPayload	2

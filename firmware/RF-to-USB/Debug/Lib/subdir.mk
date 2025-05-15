@@ -5,14 +5,17 @@
 
 # Add inputs and outputs from these tool invocations to the build variables 
 C_SRCS += \
+../Lib/nrf24.c \
 ../Lib/ssd1306.c \
 ../Lib/ssd1306_fonts.c 
 
 OBJS += \
+./Lib/nrf24.o \
 ./Lib/ssd1306.o \
 ./Lib/ssd1306_fonts.o 
 
 C_DEPS += \
+./Lib/nrf24.d \
 ./Lib/ssd1306.d \
 ./Lib/ssd1306_fonts.d 
 
@@ -24,7 +27,7 @@ Lib/%.o Lib/%.su Lib/%.cyclo: ../Lib/%.c Lib/subdir.mk
 clean: clean-Lib
 
 clean-Lib:
-	-$(RM) ./Lib/ssd1306.cyclo ./Lib/ssd1306.d ./Lib/ssd1306.o ./Lib/ssd1306.su ./Lib/ssd1306_fonts.cyclo ./Lib/ssd1306_fonts.d ./Lib/ssd1306_fonts.o ./Lib/ssd1306_fonts.su
+	-$(RM) ./Lib/nrf24.cyclo ./Lib/nrf24.d ./Lib/nrf24.o ./Lib/nrf24.su ./Lib/ssd1306.cyclo ./Lib/ssd1306.d ./Lib/ssd1306.o ./Lib/ssd1306.su ./Lib/ssd1306_fonts.cyclo ./Lib/ssd1306_fonts.d ./Lib/ssd1306_fonts.o ./Lib/ssd1306_fonts.su
 
 .PHONY: clean-Lib
 
