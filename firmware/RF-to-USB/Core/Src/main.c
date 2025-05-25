@@ -57,7 +57,7 @@ static void MX_GPIO_Init(void);
 static void MX_SPI3_Init(void);
 static void MX_USB_PCD_Init(void);
 /* USER CODE BEGIN PFP */
-
+void PrintDisplay(char*, uint8_t vert);
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
@@ -99,17 +99,23 @@ int main(void)
   /* USER CODE BEGIN 2 */
   HAL_GPIO_WritePin(LED_TX_GPIO_Port, LED_TX_Pin, 1);
 
-  ssd1306_Init();
-  ssd1306_Fill(Black);
-  ssd1306_SetCursor(2, 0);
-  ssd1306_WriteString("Miauw!", Font_16x24, White);
-  ssd1306_UpdateScreen();
-
-  //nRF24_CE_H();
   nRF24_Init();
   nRF24_SetPowerMode(nRF24_PWR_UP);
-  uint8_t nRF24_present;
+  ssd1306_Init();
 
+  /*Check if NRF24 can be reached */
+  uint8_t nRF24_present;
+  while (1){
+	  nRF24_present = nRF24_Check();
+	  if (nRF24_present){
+		  PrintDisplay("Select mode:", 0);
+		  PrintDisplay("<TX>     <RX>", 15+2);
+		  break;
+	  } else {
+		  PrintDisplay("nRF not found!", 0);
+	  }
+	  HAL_Delay(500);
+  }
 
   /* USER CODE END 2 */
 
@@ -122,22 +128,6 @@ int main(void)
     /* USER CODE BEGIN 3 */
 	HAL_GPIO_TogglePin(LED_TX_GPIO_Port, LED_TX_Pin);
 	HAL_GPIO_TogglePin(LED_RX_GPIO_Port, LED_RX_Pin);
-
-	nRF24_present = nRF24_Check();
-	if (nRF24_present){
-		ssd1306_Fill(Black);
-		ssd1306_SetCursor(2, 0);
-		ssd1306_WriteString("nRF24 OK!", Font_16x15, White);
-		ssd1306_SetCursor(2, 15+2);
-		ssd1306_WriteString("start transmitting...", Font_16x15, White);
-		ssd1306_UpdateScreen();
-	} else {
-		ssd1306_Fill(Black);
-		ssd1306_SetCursor(2, 0);
-		ssd1306_WriteString("Failed!", Font_16x24, White);
-		ssd1306_UpdateScreen();
-	}
-
 
 	HAL_Delay(500);
 
@@ -340,6 +330,12 @@ static void MX_GPIO_Init(void)
   HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
 
   /* EXTI interrupt init*/
+  HAL_NVIC_SetPriority(EXTI0_IRQn, 0, 0);
+  HAL_NVIC_EnableIRQ(EXTI0_IRQn);
+
+  HAL_NVIC_SetPriority(EXTI1_IRQn, 0, 0);
+  HAL_NVIC_EnableIRQ(EXTI1_IRQn);
+
   HAL_NVIC_SetPriority(EXTI15_10_IRQn, 0, 0);
   HAL_NVIC_EnableIRQ(EXTI15_10_IRQn);
 
@@ -348,7 +344,20 @@ static void MX_GPIO_Init(void)
 }
 
 /* USER CODE BEGIN 4 */
+void PrintDisplay(char* str, uint8_t vert){
+	//ssd1306_Fill(Black);
+	ssd1306_SetCursor(2, vert);
+	ssd1306_WriteString(str, Font_16x15, White);
+	ssd1306_UpdateScreen();
+}
 
+void HAL_GPIO_EXTI_Callback(uint16_t GPIO_PIN){
+	if (GPIO_PIN == BTN1_EXTI_Pin){
+		PrintDisplay("transmitting...", 0);
+	} else if (GPIO_PIN == BTN2_EXTI_Pin){
+		PrintDisplay("receiving...", 0);
+	}
+}
 /* USER CODE END 4 */
 
 /**

@@ -1,10 +1,10 @@
-00:34:26 **** Incremental Build of configuration Debug for project RF-to-USB ****
+23:40:33 **** Incremental Build of configuration Debug for project RF-to-USB ****
 make -j20 all 
 arm-none-eabi-size  RF-to-USB.elf 
    text	   data	    bss	    dec	    hex	filename
-  22912	     12	   2924	  25848	   64f8	RF-to-USB.elf
+  18420	     12	   2924	  21356	   536c	RF-to-USB.elf
 Finished building: default.size.stdout
  
 
-00:34:26 Build Finished. 0 errors, 0 warnings. (took 248ms)
+23:40:33 Build Finished. 0 errors, 0 warnings. (took 247ms)
 
