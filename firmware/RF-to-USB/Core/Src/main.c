@@ -24,12 +24,19 @@
 #include "ssd1306.h"
 #include "ssd1306_fonts.h"
 #include "nrf24.h"
+#include "stdio.h"
+#include "string.h"
 
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
 /* USER CODE BEGIN PTD */
-
+typedef enum {
+	STATE_INIT,
+	STATE_READY,
+	STATE_TRANSMIT,
+	STATE_RECEIVE,
+} State;
 /* USER CODE END PTD */
 
 /* Private define ------------------------------------------------------------*/
@@ -44,11 +51,11 @@
 
 /* Private variables ---------------------------------------------------------*/
 SPI_HandleTypeDef hspi3;
-
 PCD_HandleTypeDef hpcd_USB_FS;
 
 /* USER CODE BEGIN PV */
-
+State currentState = STATE_INIT;
+uint8_t channelRF;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -58,6 +65,7 @@ static void MX_SPI3_Init(void);
 static void MX_USB_PCD_Init(void);
 /* USER CODE BEGIN PFP */
 void PrintDisplay(char*, uint8_t vert);
+void runStateMachine(void);
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
@@ -103,20 +111,6 @@ int main(void)
   nRF24_SetPowerMode(nRF24_PWR_UP);
   ssd1306_Init();
 
-  /*Check if NRF24 can be reached */
-  uint8_t nRF24_present;
-  while (1){
-	  nRF24_present = nRF24_Check();
-	  if (nRF24_present){
-		  PrintDisplay("Select mode:", 0);
-		  PrintDisplay("<TX>     <RX>", 15+2);
-		  break;
-	  } else {
-		  PrintDisplay("nRF not found!", 0);
-	  }
-	  HAL_Delay(500);
-  }
-
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -128,6 +122,8 @@ int main(void)
     /* USER CODE BEGIN 3 */
 	HAL_GPIO_TogglePin(LED_TX_GPIO_Port, LED_TX_Pin);
 	HAL_GPIO_TogglePin(LED_RX_GPIO_Port, LED_RX_Pin);
+
+	runStateMachine();
 
 	HAL_Delay(500);
 
@@ -344,6 +340,89 @@ static void MX_GPIO_Init(void)
 }
 
 /* USER CODE BEGIN 4 */
+void runStateMachine(void){
+	switch(currentState){
+	case STATE_INIT: {
+		uint8_t nRF24_present = nRF24_Check(); //Check if nRF24 can communicate
+		if (nRF24_present){
+			ssd1306_Fill(Black);
+			ssd1306_SetCursor(2, 0);
+			ssd1306_WriteString("Select mode:", Font_16x15, White);
+			ssd1306_SetCursor(2, 15+2);
+			ssd1306_WriteString("<TX>     <RX>", Font_16x15, White);
+			ssd1306_UpdateScreen();
+			channelRF = nRF24_GetRFChannel();
+			currentState = STATE_READY;
+		} else {
+			//nRF24 not found
+			ssd1306_Fill(Black);
+			ssd1306_SetCursor(2, 0);
+			ssd1306_WriteString("nRF not found...", Font_16x15, White);
+			ssd1306_UpdateScreen();
+		}
+		}
+		break;
+
+	case STATE_READY: {
+		ssd1306_Fill(Black);
+		ssd1306_SetCursor(2, 0);
+		ssd1306_WriteString("Select mode:", Font_16x15, White);
+		ssd1306_SetCursor(2, 15+2);
+		ssd1306_WriteString("<TX>     <RX>", Font_16x15, White);
+		ssd1306_UpdateScreen();
+		}
+		break;
+
+	case STATE_RECEIVE: {
+		ssd1306_Fill(Black);
+		ssd1306_SetCursor(2, 0);
+		ssd1306_WriteString("RX mode", Font_16x15, White);
+		ssd1306_SetCursor(SSD1306_WIDTH - 16*2, 0);
+		char buf[8];
+		sprintf(buf, "#%01d", channelRF);
+		ssd1306_WriteString(buf, Font_16x15, White);
+
+		//receive packets
+		uint8_t payload[32]; //max payload size is 32bytes
+		uint8_t payloadLen = 0;
+		nRF24_RXResult result = nRF24_ReadPayload(payload, &payloadLen);
+
+		if (result != nRF24_RX_EMPTY){
+			// a packet was received
+			char buf[32];
+			sprintf(buf, "Got %02d bytes, pipe%01d", payloadLen, result);
+			ssd1306_SetCursor(2, 15+2);
+			ssd1306_WriteString(buf, Font_16x15, White);
+
+			//TODO - Call nRF24_ClearIRQFlags() to reset status bits
+		} else {
+			// nothing received
+		}
+		}
+
+		break;
+
+	case STATE_TRANSMIT: {
+		ssd1306_Fill(Black);
+		ssd1306_SetCursor(2, 0);
+		ssd1306_WriteString("TX mode", Font_16x15, White);
+		ssd1306_SetCursor(SSD1306_WIDTH - 16*2, 0);
+		char buf[8];
+		sprintf(buf, "#%01d", channelRF);
+		ssd1306_WriteString(buf, Font_16x15, White);
+
+
+		uint8_t data[] = "Hello";
+		uint8_t length = strlen((char*)data);
+		nRF24_WritePayload(data, length);
+		}
+		break;
+	}
+}
+
+
+
+
 void PrintDisplay(char* str, uint8_t vert){
 	//ssd1306_Fill(Black);
 	ssd1306_SetCursor(2, vert);
@@ -353,9 +432,20 @@ void PrintDisplay(char* str, uint8_t vert){
 
 void HAL_GPIO_EXTI_Callback(uint16_t GPIO_PIN){
 	if (GPIO_PIN == BTN1_EXTI_Pin){
-		PrintDisplay("transmitting...", 0);
+		if (currentState == STATE_READY){
+			currentState = STATE_TRANSMIT;
+		} else if (currentState == STATE_TRANSMIT || currentState == STATE_RECEIVE){
+			//<return> button
+			currentState = STATE_READY;
+		}
+
 	} else if (GPIO_PIN == BTN2_EXTI_Pin){
-		PrintDisplay("receiving...", 0);
+		if (currentState == STATE_READY){
+			currentState = STATE_RECEIVE;
+		} else if (currentState == STATE_TRANSMIT || currentState == STATE_RECEIVE){
+			channelRF = (channelRF + 1)%9;
+			nRF24_SetRFChannel(channelRF);
+		}
 	}
 }
 /* USER CODE END 4 */

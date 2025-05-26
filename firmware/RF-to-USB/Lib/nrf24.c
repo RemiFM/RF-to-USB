@@ -204,6 +204,14 @@ void nRF24_SetRFChannel(uint8_t channel) {
 	nRF24_WriteReg(nRF24_REG_RF_CH, channel);
 }
 
+// Get frequency channel
+// note: frequency will be (2400 + channel)MHz
+uint8_t nRF24_GetRFChannel(void){
+	return nRF24_ReadReg(nRF24_REG_RF_CH);
+}
+
+
+
 // Set automatic retransmission parameters
 // input:
 //   ard - auto retransmit delay, one of nRF24_ARD_xx values

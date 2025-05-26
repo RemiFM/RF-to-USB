@@ -1,8 +1,9 @@
-../Core/Src/main.c:72:5:main	16	static
-../Core/Src/main.c:142:6:SystemClock_Config	128	static
-../Core/Src/main.c:209:13:MX_SPI3_Init	8	static
-../Core/Src/main.c:249:13:MX_USB_PCD_Init	8	static
-../Core/Src/main.c:282:13:MX_GPIO_Init	40	static
-../Core/Src/main.c:347:6:PrintDisplay	24	static
-../Core/Src/main.c:354:6:HAL_GPIO_EXTI_Callback	16	static
-../Core/Src/main.c:367:6:Error_Handler	4	static,ignoring_inline_asm
+../Core/Src/main.c:80:5:main	8	static
+../Core/Src/main.c:138:6:SystemClock_Config	128	static
+../Core/Src/main.c:205:13:MX_SPI3_Init	8	static
+../Core/Src/main.c:245:13:MX_USB_PCD_Init	8	static
+../Core/Src/main.c:278:13:MX_GPIO_Init	40	static
+../Core/Src/main.c:343:6:runStateMachine	112	static
+../Core/Src/main.c:426:6:PrintDisplay	24	static
+../Core/Src/main.c:433:6:HAL_GPIO_EXTI_Callback	16	static
+../Core/Src/main.c:457:6:Error_Handler	4	static,ignoring_inline_asm

@@ -213,6 +213,7 @@ uint8_t nRF24_Check(void);
 void nRF24_SetPowerMode(uint8_t mode);
 void nRF24_SetOperationalMode(uint8_t mode);
 void nRF24_SetRFChannel(uint8_t channel);
+uint8_t nRF24_GetRFChannel(void);
 void nRF24_SetAutoRetr(uint8_t ard, uint8_t arc);
 void nRF24_SetAddrWidth(uint8_t addr_width);
 void nRF24_SetAddr(uint8_t pipe, const uint8_t *addr);

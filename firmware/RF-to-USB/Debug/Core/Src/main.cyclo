@@ -1,8 +1,9 @@
-../Core/Src/main.c:72:5:main	2
-../Core/Src/main.c:142:6:SystemClock_Config	4
-../Core/Src/main.c:209:13:MX_SPI3_Init	2
-../Core/Src/main.c:249:13:MX_USB_PCD_Init	2
-../Core/Src/main.c:282:13:MX_GPIO_Init	1
-../Core/Src/main.c:347:6:PrintDisplay	1
-../Core/Src/main.c:354:6:HAL_GPIO_EXTI_Callback	3
-../Core/Src/main.c:367:6:Error_Handler	1
+../Core/Src/main.c:80:5:main	1
+../Core/Src/main.c:138:6:SystemClock_Config	4
+../Core/Src/main.c:205:13:MX_SPI3_Init	2
+../Core/Src/main.c:245:13:MX_USB_PCD_Init	2
+../Core/Src/main.c:278:13:MX_GPIO_Init	1
+../Core/Src/main.c:343:6:runStateMachine	7
+../Core/Src/main.c:426:6:PrintDisplay	1
+../Core/Src/main.c:433:6:HAL_GPIO_EXTI_Callback	9
+../Core/Src/main.c:457:6:Error_Handler	1
