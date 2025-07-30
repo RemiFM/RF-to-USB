@@ -381,6 +381,7 @@ void runStateMachine(void){
 		char buf[8];
 		sprintf(buf, "#%01d", channelRF);
 		ssd1306_WriteString(buf, Font_16x15, White);
+		ssd1306_UpdateScreen();
 
 		//receive packets
 		uint8_t payload[32]; //max payload size is 32bytes
@@ -393,6 +394,7 @@ void runStateMachine(void){
 			sprintf(buf, "Got %02d bytes, pipe%01d", payloadLen, result);
 			ssd1306_SetCursor(2, 15+2);
 			ssd1306_WriteString(buf, Font_16x15, White);
+			ssd1306_UpdateScreen();
 
 			//TODO - Call nRF24_ClearIRQFlags() to reset status bits
 		} else {
@@ -410,6 +412,7 @@ void runStateMachine(void){
 		char buf[8];
 		sprintf(buf, "#%01d", channelRF);
 		ssd1306_WriteString(buf, Font_16x15, White);
+		ssd1306_UpdateScreen();
 
 
 		uint8_t data[] = "Hello";
