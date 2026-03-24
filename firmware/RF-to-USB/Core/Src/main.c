@@ -13,6 +13,7 @@
 #include "ssd1306.h"
 #include "ssd1306_fonts.h"
 #include "nrf24.h"
+#include "usbd_cdc_if.h"   /* CDC_Transmit_FS — for echoing back to host     */
 #include "stdio.h"
 #include "string.h"
 /* USER CODE END Includes */
@@ -27,28 +28,39 @@ typedef enum {
 /* USER CODE END PTD */
 
 /* USER CODE BEGIN PD */
-#define LED_BLINK_READY_MS  500
-#define LED_FLASH_TX_MS      80
-#define LED_FLASH_RX_MS      80
+#define LED_BLINK_READY_MS   500
+#define LED_FLASH_TX_MS       80
+#define LED_FLASH_RX_MS       80
 
-/* Shared RF configuration — single source of truth for both TX and RX */
-static const uint8_t RF_ADDR[5]  = {'N','O','D','E','1'};
-#define RF_CHANNEL   2
-#define RF_PAYLOAD  32
+/* Shared RF config */
+static const uint8_t RF_ADDR[5] = {'N','O','D','E','1'};
+#define RF_CHANNEL  2
+#define RF_PAYLOAD 32
+
+/* Maximum user message length is capped at the nRF24 payload size */
+#define MSG_MAX_LEN RF_PAYLOAD
 /* USER CODE END PD */
 
 /* Private variables ---------------------------------------------------------*/
 SPI_HandleTypeDef hspi3;
-PCD_HandleTypeDef hpcd_USB_FS;
+extern PCD_HandleTypeDef hpcd_USB_FS;
 
 /* USER CODE BEGIN PV */
 State    currentState = STATE_INIT;
-uint32_t lastTxTick   = 0;
 uint32_t lastLedTick  = 0;
 uint32_t ledTxOffTick = 0;
 uint32_t ledRxOffTick = 0;
 static State prevState = (State)-1;
 
+/* ---- USB CDC receive buffer -------------------------------------------- */
+/* Written from CDC_DataReceivedCallback (USB interrupt context).
+   Read and cleared from the main loop (STATE_TRANSMIT polling).
+   volatile ensures the compiler doesn't cache stale values.               */
+static volatile uint8_t  usbMsgPending = 0;          /* 1 = new message     */
+static volatile uint8_t  usbMsg[MSG_MAX_LEN + 1];    /* +1 for '\0'         */
+static volatile uint8_t  usbMsgLen = 0;
+
+/* ---- Display cache ------------------------------------------------------- */
 static char dispLine1[17] = {0};
 static char dispLine2[17] = {0};
 /* USER CODE END PV */
@@ -65,6 +77,30 @@ void UpdateDisplayLine2(const char *line2);
 /* USER CODE END PFP */
 
 /* USER CODE BEGIN 0 */
+
+/**
+  * @brief  Called from CDC_Receive_FS in usbd_cdc_if.c (USB interrupt context).
+  *         Copies the incoming bytes into the pending-message buffer.
+  *         Strip any trailing CR / LF so the raw text hits the RF payload.
+  */
+void CDC_DataReceivedCallback(uint8_t *buf, uint32_t len)
+{
+    if (usbMsgPending) return;          /* previous message not sent yet — drop */
+
+    /* Clamp to payload capacity */
+    if (len > MSG_MAX_LEN) len = MSG_MAX_LEN;
+
+    /* Strip trailing CR / LF (common when sending from a terminal) */
+    while (len > 0 && (buf[len - 1] == '\r' || buf[len - 1] == '\n'))
+        len--;
+
+    if (len == 0) return;               /* blank line — ignore */
+
+    memcpy((uint8_t *)usbMsg, buf, len);
+    usbMsg[len] = '\0';
+    usbMsgLen   = (uint8_t)len;
+    usbMsgPending = 1;                  /* signal main loop */
+}
 
 void UpdateDisplay(const char *line1, const char *line2)
 {
@@ -92,6 +128,7 @@ int main(void)
   MX_GPIO_Init();
   MX_SPI3_Init();
   MX_USB_PCD_Init();
+  MX_USB_DEVICE_Init();
 
   /* USER CODE BEGIN 2 */
   HAL_GPIO_WritePin(LED_TX_GPIO_Port, LED_TX_Pin, GPIO_PIN_RESET);
@@ -99,11 +136,8 @@ int main(void)
 
   ssd1306_Init();
 
-  /* nRF24_Init() and nRF24_Check() are called inside the state machine.
-     Do NOT call nRF24_SetAddr / nRF24_SetRXPipe here — nRF24_Check()
-     overwrites TX_ADDR with a test pattern, so any addresses written
-     before Check() runs will be silently clobbered.  All RF config is
-     deferred to the STATE_TRANSMIT / STATE_RECEIVE entry blocks.      */
+  /* USB device stack is started by MX_USB_PCD_Init via the generated
+     usb_device.c / MX_USB_DEVICE_Init().  Nothing extra needed here.  */
 
   /* USER CODE END 2 */
 
@@ -121,7 +155,7 @@ void runStateMachine(void)
     uint32_t now = HAL_GetTick();
 
     uint8_t isNewState = (currentState != prevState);
-    prevState = currentState;   /* Updated at TOP — before any transition */
+    prevState = currentState;
 
     /* ------------------------------------------------------------------ */
     /* Entry actions                                                        */
@@ -134,18 +168,10 @@ void runStateMachine(void)
 
         switch (currentState)
         {
-            /* ---- INIT: verify SPI comms, then move to READY ---- */
             case STATE_INIT:
                 UpdateDisplay("Checking...", "");
-
-                /* Step 1: reset chip to a clean known state */
                 nRF24_CE_L();
                 nRF24_Init();
-
-                /* Step 2: verify the chip is actually there.
-                   NOTE: Check() writes a test pattern to TX_ADDR —
-                   that is why ALL address config lives in the TX/RX
-                   entry blocks below, never here in INIT.           */
                 if (nRF24_Check())
                 {
                     UpdateDisplay("nRF24 OK", "");
@@ -159,87 +185,57 @@ void runStateMachine(void)
                 }
                 break;
 
-            /* ---- READY: wait for mode selection ---- */
             case STATE_READY:
                 UpdateDisplay("Mode Select", "TX    RX");
                 HAL_GPIO_WritePin(LED_TX_GPIO_Port, LED_TX_Pin, GPIO_PIN_SET);
                 HAL_GPIO_WritePin(LED_RX_GPIO_Port, LED_RX_Pin, GPIO_PIN_SET);
                 break;
 
-            /* ----------------------------------------------------------------
-             * RECEIVE entry
-             *
-             * Full RF config happens here, matching the reference pattern:
-             *   Init → configure all registers → SetPowerMode last → CE_H
-             *
-             * This guarantees no register has been touched by Check() between
-             * configuration and activation.
-             * ---------------------------------------------------------------- */
             case STATE_RECEIVE:
                 nRF24_CE_L();
-                nRF24_Init();                                   /* clean slate  */
-
+                nRF24_Init();
                 nRF24_SetRFChannel(RF_CHANNEL);
                 nRF24_SetDataRate(nRF24_DR_1Mbps);
                 nRF24_SetTXPower(nRF24_TXPWR_0dBm);
                 nRF24_SetCRCScheme(nRF24_CRC_2byte);
                 nRF24_SetAddrWidth(5);
-
-                nRF24_DisableAA(0xFF);                          /* all pipes    */
-
-                /* PIPE0 RX address must match the TX address on the other node */
+                nRF24_DisableAA(0xFF);
                 nRF24_SetAddr(nRF24_PIPE0, RF_ADDR);
                 nRF24_SetRXPipe(nRF24_PIPE0, nRF24_AA_OFF, RF_PAYLOAD);
-
                 nRF24_SetOperationalMode(nRF24_MODE_RX);
-
                 nRF24_FlushRX();
                 nRF24_FlushTX();
                 nRF24_ClearIRQFlags();
-
-                /* Power up AFTER all config (matches reference) */
                 nRF24_SetPowerMode(nRF24_PWR_UP);
-                HAL_Delay(2);                                   /* ≥1.5 ms osc */
-
-                nRF24_CE_H();                                   /* start listen */
-
+                HAL_Delay(2);
+                nRF24_CE_H();
                 UpdateDisplay("RX MODE", "Waiting...");
                 HAL_GPIO_WritePin(LED_RX_GPIO_Port, LED_RX_Pin, GPIO_PIN_SET);
                 break;
 
-            /* ----------------------------------------------------------------
-             * TRANSMIT entry — same disciplined init sequence
-             * ---------------------------------------------------------------- */
             case STATE_TRANSMIT:
                 nRF24_CE_L();
                 nRF24_Init();
-
                 nRF24_SetRFChannel(RF_CHANNEL);
                 nRF24_SetDataRate(nRF24_DR_1Mbps);
                 nRF24_SetTXPower(nRF24_TXPWR_0dBm);
                 nRF24_SetCRCScheme(nRF24_CRC_2byte);
                 nRF24_SetAddrWidth(5);
-
                 nRF24_DisableAA(0xFF);
-
-                /* TX address — must match PIPE0 address on the RX node */
                 nRF24_SetAddr(nRF24_PIPETX, RF_ADDR);
-
                 nRF24_SetOperationalMode(nRF24_MODE_TX);
-
                 nRF24_FlushRX();
                 nRF24_FlushTX();
                 nRF24_ClearIRQFlags();
-
-                /* Power up AFTER all config */
                 nRF24_SetPowerMode(nRF24_PWR_UP);
                 HAL_Delay(2);
 
-                /* CE stays low between packets; raised briefly per packet */
+                /* Discard any USB data that arrived before we entered TX mode */
+                usbMsgPending = 0;
 
-                UpdateDisplay("TX MODE", "Sending...");
+                UpdateDisplay("TX MODE", "Waiting USB...");
+                /* TX LED on steadily while idle */
                 HAL_GPIO_WritePin(LED_TX_GPIO_Port, LED_TX_Pin, GPIO_PIN_SET);
-                lastTxTick = now - 1000;    /* trigger first packet immediately */
                 break;
         }
     }
@@ -262,13 +258,13 @@ void runStateMachine(void)
         /* ---- RECEIVE: poll FIFO, update display, flash RX LED ---- */
         case STATE_RECEIVE:
         {
-            uint8_t payload[33] = {0};
-            uint8_t payloadLen  = 0;
+            uint8_t payload[RF_PAYLOAD + 1];
+            uint8_t payloadLen = 0;
 
             if (nRF24_GetStatus_RXFIFO() != nRF24_STATUS_RXFIFO_EMPTY)
             {
                 nRF24_ReadPayload(payload, &payloadLen);
-                if (payloadLen == 0 || payloadLen > 32) payloadLen = 32;
+                if (payloadLen == 0 || payloadLen > RF_PAYLOAD) payloadLen = RF_PAYLOAD;
                 payload[payloadLen] = '\0';
 
                 nRF24_ClearIRQFlags();
@@ -286,24 +282,36 @@ void runStateMachine(void)
             break;
         }
 
-        /* ---- TRANSMIT: send every second, flash TX LED ---- */
+        /* ---- TRANSMIT: send whatever arrives over USB CDC ---- */
         case STATE_TRANSMIT:
         {
-            if (now - lastTxTick >= 1000)
+            if (usbMsgPending)
             {
-                lastTxTick = now;
+                /* Snapshot the message and release the buffer immediately so
+                   the USB ISR can accept the next packet without waiting for
+                   the RF transmission to complete.                          */
+                uint8_t txData[RF_PAYLOAD] = {0};
+                uint8_t msgLen = usbMsgLen;
+                memcpy(txData, (const uint8_t *)usbMsg, msgLen);
+                usbMsgPending = 0;              /* release buffer */
 
-                uint8_t txData[32] = {0};
-                memcpy(txData, "Hello", 5);
+                /* Show the outgoing message on line 2 of the display */
+                UpdateDisplay("TX MODE", (char *)txData);
 
+                /* Transmit over RF */
                 nRF24_WritePayload(txData, RF_PAYLOAD);
                 nRF24_CE_H();
-                HAL_Delay(1);   /* ≥10 µs CE pulse */
+                HAL_Delay(1);                   /* ≥10 µs CE pulse */
                 nRF24_CE_L();
-
                 nRF24_ClearIRQFlags();
-                UpdateDisplayLine2("SENT OK");
 
+                /* Echo confirmation back to the host terminal */
+                char echo[48];
+                int echoLen = snprintf(echo, sizeof(echo),
+                                       "SENT: %.*s\r\n", msgLen, txData);
+                CDC_Transmit_FS((uint8_t *)echo, (uint16_t)echoLen);
+
+                /* Flash TX LED */
                 HAL_GPIO_WritePin(LED_TX_GPIO_Port, LED_TX_Pin, GPIO_PIN_SET);
                 ledTxOffTick = now + LED_FLASH_TX_MS;
             }
