@@ -1,6 +1,6 @@
 ################################################################################
 # Automatically-generated file. Do not edit!
-# Toolchain: GNU Tools for STM32 (12.3.rel1)
+# Toolchain: GNU Tools for STM32 (13.3.rel1)
 ################################################################################
 
 -include ../makefile.init
@@ -61,8 +61,8 @@ all: main-build
 main-build: RF-to-USB.elf secondary-outputs
 
 # Tool invocations
-RF-to-USB.elf RF-to-USB.map: $(OBJS) $(USER_OBJS) C:\Users\remi.decoster\OneDrive\ -\ Flanders\ Make\ vzw\Documents\Personal\RF-to-USB\firmware\RF-to-USB\STM32L432KBUX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
-	arm-none-eabi-gcc -o "RF-to-USB.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"C:\Users\remi.decoster\OneDrive - Flanders Make vzw\Documents\Personal\RF-to-USB\firmware\RF-to-USB\STM32L432KBUX_FLASH.ld" --specs=nosys.specs -Wl,-Map="RF-to-USB.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+RF-to-USB.elf RF-to-USB.map: $(OBJS) $(USER_OBJS) C:\Users\remi\Documents\GitHub\RF-to-USB\firmware\RF-to-USB\STM32L432KBUX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-gcc -o "RF-to-USB.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"C:\Users\remi\Documents\GitHub\RF-to-USB\firmware\RF-to-USB\STM32L432KBUX_FLASH.ld" --specs=nosys.specs -Wl,-Map="RF-to-USB.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
 	@echo 'Finished building target: $@'
 	@echo ' '
 

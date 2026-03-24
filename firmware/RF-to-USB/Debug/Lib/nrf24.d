@@ -1,5 +1,5 @@
 Lib/nrf24.o: ../Lib/nrf24.c ../Lib/nrf24.h \
- C:/Users/remi.decoster/OneDrive\ -\ Flanders\ Make\ vzw/Documents/Personal/RF-to-USB/firmware/RF-to-USB/Lib/nrf24_platform.h \
+ C:/Users/remi/Documents/GitHub/RF-to-USB/firmware/RF-to-USB/Lib/nrf24_platform.h \
  ../Core/Inc/main.h ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal.h \
  ../Core/Inc/stm32l4xx_hal_conf.h \
  ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_rcc.h \
@@ -30,7 +30,7 @@ Lib/nrf24.o: ../Lib/nrf24.c ../Lib/nrf24.h \
  ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_spi.h \
  ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_spi_ex.h
 ../Lib/nrf24.h:
-C:/Users/remi.decoster/OneDrive\ -\ Flanders\ Make\ vzw/Documents/Personal/RF-to-USB/firmware/RF-to-USB/Lib/nrf24_platform.h:
+C:/Users/remi/Documents/GitHub/RF-to-USB/firmware/RF-to-USB/Lib/nrf24_platform.h:
 ../Core/Inc/main.h:
 ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal.h:
 ../Core/Inc/stm32l4xx_hal_conf.h:

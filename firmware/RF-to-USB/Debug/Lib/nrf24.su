@@ -1,6 +1,6 @@
-C:/Users/remi.decoster/OneDrive - Flanders Make vzw/Documents/Personal/RF-to-USB/firmware/RF-to-USB/Lib/nrf24_platform.h:26:20:nRF24_CSN_L	8	static
-C:/Users/remi.decoster/OneDrive - Flanders Make vzw/Documents/Personal/RF-to-USB/firmware/RF-to-USB/Lib/nrf24_platform.h:30:20:nRF24_CSN_H	8	static
-C:/Users/remi.decoster/OneDrive - Flanders Make vzw/Documents/Personal/RF-to-USB/firmware/RF-to-USB/Lib/nrf24_platform.h:35:23:nRF24_LL_RW	32	static
+C:/Users/remi/Documents/GitHub/RF-to-USB/firmware/RF-to-USB/Lib/nrf24_platform.h:26:20:nRF24_CSN_L	8	static
+C:/Users/remi/Documents/GitHub/RF-to-USB/firmware/RF-to-USB/Lib/nrf24_platform.h:30:20:nRF24_CSN_H	8	static
+C:/Users/remi/Documents/GitHub/RF-to-USB/firmware/RF-to-USB/Lib/nrf24_platform.h:35:23:nRF24_LL_RW	32	static
 ../Lib/nrf24.c:9:16:nRF24_ReadReg	24	static
 ../Lib/nrf24.c:24:13:nRF24_WriteReg	16	static
 ../Lib/nrf24.c:47:13:nRF24_ReadMBReg	24	static

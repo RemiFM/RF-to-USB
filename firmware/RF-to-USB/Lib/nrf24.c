@@ -249,9 +249,9 @@ void nRF24_SetAddr(uint8_t pipe, const uint8_t *addr) {
 		case nRF24_PIPE0:
 		case nRF24_PIPE1:
 			// Get address width
-			addr_width = nRF24_ReadReg(nRF24_REG_SETUP_AW) + 1;
+			addr_width = nRF24_ReadReg(nRF24_REG_SETUP_AW) + 2; //adjusted, was +1 first, now +2
 			// Write address in reverse order (LSByte first)
-			addr += addr_width;
+			addr += addr_width -1; //adjusted, added -1
 			nRF24_CSN_L();
 			nRF24_LL_RW(nRF24_CMD_W_REGISTER | nRF24_ADDR_REGS[pipe]);
 			do {

@@ -28,12 +28,12 @@ Core/Src/main.o: ../Core/Src/main.c ../Core/Inc/main.h \
  ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_pwr_ex.h \
  ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_spi.h \
  ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_spi_ex.h \
- C:/Users/remi.decoster/OneDrive\ -\ Flanders\ Make\ vzw/Documents/Personal/RF-to-USB/firmware/RF-to-USB/Lib/ssd1306.h \
- C:/Users/remi.decoster/OneDrive\ -\ Flanders\ Make\ vzw/Documents/Personal/RF-to-USB/firmware/RF-to-USB/Lib/ssd1306_conf.h \
- C:/Users/remi.decoster/OneDrive\ -\ Flanders\ Make\ vzw/Documents/Personal/RF-to-USB/firmware/RF-to-USB/Lib/ssd1306_fonts.h \
- C:/Users/remi.decoster/OneDrive\ -\ Flanders\ Make\ vzw/Documents/Personal/RF-to-USB/firmware/RF-to-USB/Lib/ssd1306.h \
- C:/Users/remi.decoster/OneDrive\ -\ Flanders\ Make\ vzw/Documents/Personal/RF-to-USB/firmware/RF-to-USB/Lib/nrf24.h \
- C:/Users/remi.decoster/OneDrive\ -\ Flanders\ Make\ vzw/Documents/Personal/RF-to-USB/firmware/RF-to-USB/Lib/nrf24_platform.h
+ C:/Users/remi/Documents/GitHub/RF-to-USB/firmware/RF-to-USB/Lib/ssd1306.h \
+ C:/Users/remi/Documents/GitHub/RF-to-USB/firmware/RF-to-USB/Lib/ssd1306_conf.h \
+ C:/Users/remi/Documents/GitHub/RF-to-USB/firmware/RF-to-USB/Lib/ssd1306_fonts.h \
+ C:/Users/remi/Documents/GitHub/RF-to-USB/firmware/RF-to-USB/Lib/ssd1306.h \
+ C:/Users/remi/Documents/GitHub/RF-to-USB/firmware/RF-to-USB/Lib/nrf24.h \
+ C:/Users/remi/Documents/GitHub/RF-to-USB/firmware/RF-to-USB/Lib/nrf24_platform.h
 ../Core/Inc/main.h:
 ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal.h:
 ../Core/Inc/stm32l4xx_hal_conf.h:
@@ -64,9 +64,9 @@ Core/Src/main.o: ../Core/Src/main.c ../Core/Inc/main.h \
 ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_pwr_ex.h:
 ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_spi.h:
 ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_spi_ex.h:
-C:/Users/remi.decoster/OneDrive\ -\ Flanders\ Make\ vzw/Documents/Personal/RF-to-USB/firmware/RF-to-USB/Lib/ssd1306.h:
-C:/Users/remi.decoster/OneDrive\ -\ Flanders\ Make\ vzw/Documents/Personal/RF-to-USB/firmware/RF-to-USB/Lib/ssd1306_conf.h:
-C:/Users/remi.decoster/OneDrive\ -\ Flanders\ Make\ vzw/Documents/Personal/RF-to-USB/firmware/RF-to-USB/Lib/ssd1306_fonts.h:
-C:/Users/remi.decoster/OneDrive\ -\ Flanders\ Make\ vzw/Documents/Personal/RF-to-USB/firmware/RF-to-USB/Lib/ssd1306.h:
-C:/Users/remi.decoster/OneDrive\ -\ Flanders\ Make\ vzw/Documents/Personal/RF-to-USB/firmware/RF-to-USB/Lib/nrf24.h:
-C:/Users/remi.decoster/OneDrive\ -\ Flanders\ Make\ vzw/Documents/Personal/RF-to-USB/firmware/RF-to-USB/Lib/nrf24_platform.h:
+C:/Users/remi/Documents/GitHub/RF-to-USB/firmware/RF-to-USB/Lib/ssd1306.h:
+C:/Users/remi/Documents/GitHub/RF-to-USB/firmware/RF-to-USB/Lib/ssd1306_conf.h:
+C:/Users/remi/Documents/GitHub/RF-to-USB/firmware/RF-to-USB/Lib/ssd1306_fonts.h:
+C:/Users/remi/Documents/GitHub/RF-to-USB/firmware/RF-to-USB/Lib/ssd1306.h:
+C:/Users/remi/Documents/GitHub/RF-to-USB/firmware/RF-to-USB/Lib/nrf24.h:
+C:/Users/remi/Documents/GitHub/RF-to-USB/firmware/RF-to-USB/Lib/nrf24_platform.h:
